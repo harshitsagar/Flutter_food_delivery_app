@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_food_delivery_app/pages/signup.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/signup.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});

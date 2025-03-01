@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_food_delivery_app/pages/bottom_nav.dart';
-import 'package:flutter_food_delivery_app/pages/forgotpassword.dart';
-import 'package:flutter_food_delivery_app/pages/signup.dart';
+import 'package:flutter_food_delivery_app/pages/bottom_nav/bottom_nav.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/forgotpassword.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/signup.dart';
 import 'package:flutter_food_delivery_app/service/database.dart';
 import 'package:flutter_food_delivery_app/service/shared_pref.dart';
 import 'package:flutter_food_delivery_app/widget/widget_support.dart';
@@ -60,84 +60,74 @@ class _LogInState extends State<LogIn> {
 
   // Sign in with Google .....
   loginWithGoogle() async {
-
     final auth = FirebaseAuth.instance;
     final googleSignIn = GoogleSignIn();
 
     try {
-      final GoogleSignInAccount? googleSignInAccount =
-      await googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-
-        final AuthCredential authCredential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken);
-
-        await auth.signInWithCredential(authCredential);
-
-        final UserCredential userCredential = await auth.signInWithCredential(authCredential);
-        final User? user = userCredential.user ;
-
-        // For Database Configurations .......
-
-        // Retrieve the email, username, and ID
-        final String? email = user!.email;
-        final String? username = user.displayName;
-        final String uid = user.uid;
-        final String login = "Google";
-
-        Map<String, dynamic> addUserInfo = {
-
-          "Name" : username,
-          "Email" : email,
-          "Wallet" : wallet,
-          "Id" : uid,
-          "login" : "Google"
-
-        };
-
-        await DatabaseMethods().addUserDetail(addUserInfo, uid);
-
-        // now we save our info locally with the help of shared preferences ......
-        await SharedPreferenceHelper().saveUserName(username!);
-        await SharedPreferenceHelper().saveUserEmail(email!);
-        await SharedPreferenceHelper().saveUserWallet(wallet!);
-        await SharedPreferenceHelper().saveUserId(uid);
-        await SharedPreferenceHelper().saveUserLOGIN(login);
-
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNav()));
-
+      if (googleSignInAccount == null) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            duration: Duration(milliseconds: 2000),
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              "Logged In Successfully",
-              style: TextStyle(fontSize: 20),
-            )));
-      }
-
-      else {
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            duration: Duration(milliseconds: 2000),
             backgroundColor: Colors.red,
-            content: Text(
-              "Login Failed",
-              style: TextStyle(fontSize: 20),
-            )));
-
+            content: Text("Google Sign-In canceled.")));
+        return;
       }
 
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    }
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
 
+      if (googleSignInAuthentication.idToken == null ||
+          googleSignInAuthentication.accessToken == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Google authentication failed.")));
+        return;
+      }
+
+      final AuthCredential authCredential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken);
+
+      final UserCredential userCredential = await auth.signInWithCredential(authCredential);
+      final User? user = userCredential.user;
+
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("User is null, login failed.")));
+        return;
+      }
+
+      // Store user details
+      Map<String, dynamic> addUserInfo = {
+        "Name": user.displayName ?? "Google User",
+        "Email": user.email ?? "no-email@example.com",
+        "Wallet": wallet,
+        "Id": user.uid,
+        "login": "Google",
+      };
+
+      await DatabaseMethods().addUserDetail(addUserInfo, user.uid);
+
+      // Save user info locally
+      await SharedPreferenceHelper().saveUserName(user.displayName ?? "Google User");
+      await SharedPreferenceHelper().saveUserEmail(user.email ?? "no-email@example.com");
+      await SharedPreferenceHelper().saveUserWallet(wallet?? '0');
+      await SharedPreferenceHelper().saveUserId(user.uid);
+      await SharedPreferenceHelper().saveUserLOGIN("Google");
+
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNav()));
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(milliseconds: 2000),
+          backgroundColor: Colors.orangeAccent,
+          content: Text("Logged In Successfully", style: TextStyle(fontSize: 20))));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red, content: Text("Error: ${e.toString()}")));
+    }
   }
+
 
   // login with twitter .......
   /*

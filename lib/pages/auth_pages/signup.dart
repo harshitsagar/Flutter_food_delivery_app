@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_food_delivery_app/pages/bottom_nav.dart';
-import 'package:flutter_food_delivery_app/pages/login.dart';
+import 'package:flutter_food_delivery_app/pages/bottom_nav/bottom_nav.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/login.dart';
 import 'package:flutter_food_delivery_app/service/database.dart';
 import 'package:flutter_food_delivery_app/service/shared_pref.dart';
 import 'package:flutter_food_delivery_app/widget/widget_support.dart';

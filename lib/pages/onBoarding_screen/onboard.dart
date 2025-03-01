@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_delivery_app/pages/login.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/login.dart';
 import 'package:flutter_food_delivery_app/widget/content_model.dart';
 import 'package:flutter_food_delivery_app/widget/widget_support.dart';
 

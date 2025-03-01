@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_food_delivery_app/pages/home.dart';
-import 'package:flutter_food_delivery_app/pages/order.dart';
+import 'package:flutter_food_delivery_app/pages/cart.dart';
 import 'package:flutter_food_delivery_app/pages/profile.dart';
 import 'package:flutter_food_delivery_app/pages/wallet.dart';
 

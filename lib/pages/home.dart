@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_food_delivery_app/pages/details.dart';
+import 'package:flutter_food_delivery_app/pages/details_page/details.dart';
 import 'package:flutter_food_delivery_app/service/database.dart';
 import 'package:flutter_food_delivery_app/widget/widget_support.dart';
 

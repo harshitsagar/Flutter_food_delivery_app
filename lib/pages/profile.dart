@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_food_delivery_app/pages/login.dart';
+import 'package:flutter_food_delivery_app/admin/add_food.dart';
+import 'package:flutter_food_delivery_app/admin/admin_login.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/login.dart';
 import 'package:flutter_food_delivery_app/service/auth.dart';
 import 'package:flutter_food_delivery_app/service/shared_pref.dart';
 import 'package:image_picker/image_picker.dart';
@@ -430,6 +432,73 @@ class _ProfileState extends State<Profile> {
 
               ),
 
+            ),
+
+            SizedBox(height: 20,),
+
+            // Admin Login pannel .......
+            GestureDetector(
+
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddFood())),
+
+              child: Container(
+
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Material(
+
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(10),
+
+                  child: Container(
+
+                    padding: EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 10
+                    ),
+
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    child: Row(
+
+                      children: [
+
+                        Icon(
+                          Icons.delete,
+                          color: Colors.black,
+                        ),
+
+                        SizedBox(width: 20,),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            Text(
+                              "Admin Login",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+
+                              ),
+                            ),
+
+                          ],
+
+                        )
+
+                      ],
+
+                    ),
+
+                  ),
+
+                ),
+
+              ),
             ),
 
             SizedBox(height: 20,),

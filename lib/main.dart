@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_food_delivery_app/pages/bottom_nav/bottom_nav.dart';
 import 'package:flutter_food_delivery_app/pages/home.dart';
-import 'package:flutter_food_delivery_app/pages/login.dart';
-import 'package:flutter_food_delivery_app/pages/onboard.dart';
+import 'package:flutter_food_delivery_app/pages/auth_pages/login.dart';
+import 'package:flutter_food_delivery_app/pages/onBoarding_screen/onboard.dart';
 import 'package:flutter_food_delivery_app/widget/app_constant.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Home(),
+      home: Onboard(),
     );
   }
 }
