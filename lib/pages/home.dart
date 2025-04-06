@@ -113,7 +113,7 @@ class _HomeState extends State<Home> {
                                     const SizedBox(height: 10,),
 
                                     Text(
-                                      "\$" + ds["Price"],
+                                      "\₹" + ds["Price"],
                                       style: AppWidget.semiBoldFieldStyle(),
                                     ),
 
@@ -234,7 +234,7 @@ class _HomeState extends State<Home> {
                                 Container(
                                   width: MediaQuery.of(context).size.width/2,
                                   child: Text(
-                                    "\$" + ds["Price"],
+                                    "\₹" + ds["Price"],
                                     style: AppWidget.semiBoldFieldStyle(),
                                   ),
                                 ),

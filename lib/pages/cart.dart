@@ -62,115 +62,89 @@ class _OrderState extends State<Order> {
     super.initState();
   }
 
+
   Widget foodCart() {
-
     return StreamBuilder(
-        stream: foodStream,
-        builder: (context, AsyncSnapshot snaphot) {
+      stream: foodStream,
+      builder: (context, AsyncSnapshot snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: snapshot.data.docs.length,
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              DocumentSnapshot ds = snapshot.data.docs[index];
 
-          return snaphot.hasData
+              // Remove all non-numeric characters (e.g., $, ₹, commas) before parsing
+              String totalString = ds["Total"].replaceAll(RegExp(r'[^0-9.]'), '');
+              total = (total! + double.parse(totalString));
 
-              ? ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: snaphot.data.docs.length,
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-
-                DocumentSnapshot ds = snaphot.data.docs[index] ;
-                total = (total! + double.parse(ds["Total"].replaceAll('\$', '')))!;
-
-                return Container(
-
-                  margin: EdgeInsets.only(left: 20, right: 20 , bottom: 10),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-
-                      padding: EdgeInsets.all(10),
-
-                      child: Row(
-
-                        children: [
-
-                          Container(
-
+              return Container(
+                margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                child: Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 90,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(child: Text(ds["Quantity"])),
+                        ),
+                        SizedBox(width: 20),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.network(
+                            ds["Image"],
                             height: 90,
-                            width: 40,
-                            decoration: BoxDecoration(
-
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10),
-
-                            ),
-
-                            child: Center(child: Text(ds["Quantity"])),
-
+                            width: 90,
+                            fit: BoxFit.cover,
                           ),
-
-                          SizedBox(width: 20,),
-
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.network(
-                              ds["Image"],
-                              height: 90,
-                              width: 90,
-                              fit: BoxFit.cover,
-                            ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ds["Name"],
+                                style: AppWidget.semiBoldFieldStyle(),
+                              ),
+                              Text(
+                                "₹$totalString", // Display the cleaned total with ₹ symbol
+                                style: AppWidget.semiBoldFieldStyle(),
+                              ),
+                            ],
                           ),
-
-                          SizedBox(width: 20,),
-
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                Text(
-                                  ds["Name"] ,
-                                  style: AppWidget.semiBoldFieldStyle(),
-                                ),
-
-                                Text(
-                                  ds["Total"] ,
-                                  style: AppWidget.semiBoldFieldStyle(),
-                                ),
-
-
-                              ],
-
-                            ),
-                          ),
-
-                        ],
-
-                      ),
-
+                        ),
+                      ],
                     ),
                   ),
-                );
-
-              })
-
-              : Center(
-                  child: SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                  ),
-          ) ;
-        }
+                ),
+              );
+            })
+            : Center(
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          ),
+        );
+      },
     );
-
   }
 
 
@@ -216,7 +190,7 @@ class _OrderState extends State<Order> {
 
                   Text("Total Price", style: AppWidget.boldTextFieldStyle(),),
 
-                  Text("\$" + total.toString(), style: AppWidget.semiBoldFieldStyle(),),
+                  Text("\₹" + total.toString(), style: AppWidget.semiBoldFieldStyle(),),
 
                 ],
               ),

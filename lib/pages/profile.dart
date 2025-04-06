@@ -439,7 +439,7 @@ class _ProfileState extends State<Profile> {
             // Admin Login pannel .......
             GestureDetector(
 
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddFood())),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AdminLogin())),
 
               child: Container(
 
@@ -466,7 +466,7 @@ class _ProfileState extends State<Profile> {
                       children: [
 
                         Icon(
-                          Icons.delete,
+                          Icons.person,
                           color: Colors.black,
                         ),
 
